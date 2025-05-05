@@ -20,19 +20,22 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|exists:wifi_users,user_id',
-            'wifi_package' => 'required|exists:wifi_packages,name',
+            'user_ids' => 'required|array',
+            'user_ids.*' => 'exists:wifi_users,user_id',
             'message' => 'required|string',
             'sent_at' => 'required|date',
         ]);
 
-        Invoice::create([
-            'user_id' => $request->user_id,
-            'wifi_package' => $request->wifi_package,
-            'message' => $request->message,
-            'sent_at' => $request->sent_at,
-        ]);
+        foreach ($request->user_ids as $userId) {
+            $wifiUser = WifiUser::where('user_id', $userId)->firstOrFail();
+            Invoice::create([
+                'user_id' => $userId,
+                'wifi_package' => $wifiUser->wifi_package,
+                'message' => $request->message,
+                'sent_at' => $request->sent_at,
+            ]);
+        }
 
-        return redirect()->route('invoices.create')->with('success', 'Tagihan berhasil dikirim!');
+        return redirect()->route('invoices.create')->with('success', 'Tagihan berhasil dikirim ke ' . count($request->user_ids) . ' pengguna!');
     }
 }

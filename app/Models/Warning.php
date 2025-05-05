@@ -14,4 +14,9 @@ class Warning extends Model
     protected $casts = [
         'sent_at' => 'datetime',
     ];
+
+    public function wifiUser()
+    {
+        return $this->belongsTo(WifiUser::class, 'user_id', 'user_id');
+    }
 }

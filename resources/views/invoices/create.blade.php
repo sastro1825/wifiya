@@ -10,27 +10,21 @@
                 <label for="search_user" class="block text-sm font-medium text-gray-700">Cari Pengguna</label>
                 <input id="search_user" type="text" name="search_user" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" autocomplete="off">
             </div>
-            <div>
-                <label for="user_id" class="block text-sm font-medium text-gray-700">Pilih Pengguna</label>
-                <select id="user_id" name="user_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                    <option value="">-- Pilih Pengguna --</option>
+            <div class="user-select">
+                <label class="block text-sm font-medium text-gray-700">Pilih Pengguna</label>
+                <div class="user-ids"></div>
+                <button type="button" class="dropdown-button mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-white border px-4 py-2 text-left">Pilih Pengguna</button>
+                <div class="dropdown-menu absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto hidden">
                     @foreach ($wifiUsers as $user)
-                        <option value="{{ $user->user_id }}">{{ $user->user_id }}</option>
+                        <div class="px-4 py-2">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="action_{{ $user->user_id }}" value="invoice" data-user-id="{{ $user->user_id }}" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
+                                <span>Kirim Tagihan ({{ $user->user_id }})</span>
+                            </label>
+                        </div>
                     @endforeach
-                </select>
-                @error('user_id')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
-            <div>
-                <label for="wifi_package" class="block text-sm font-medium text-gray-700">Pilih Paket</label>
-                <select id="wifi_package" name="wifi_package" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                    <option value="">-- Pilih Paket --</option>
-                    @foreach ($wifiPackages as $package)
-                        <option value="{{ $package->name }}">{{ $package->name }}</option>
-                    @endforeach
-                </select>
-                @error('wifi_package')
+                </div>
+                @error('user_ids')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>
@@ -73,7 +67,7 @@
                         @foreach ($invoices as $invoice)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $invoice->user_id }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $invoice->wifi_package }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $invoice->wifiUser->wifi_package }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-900">{{ $invoice->message }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $invoice->sent_at->format('d/m/Y') }}</td>
                             </tr>
