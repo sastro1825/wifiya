@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.autocomplete-dropdown {
+    @apply absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-y-auto;
+}
+
+.autocomplete-dropdown li {
+    @apply px-4 py-2 cursor-pointer;
+}
+
+.autocomplete-dropdown li:hover {
+    @apply bg-indigo-100;
+}
+
+table {
+    @apply w-full text-left;
+}
+
+th, td {
+    @apply px-6 py-4;
+}
+
+thead {
+    @apply bg-gray-50;
+}
+
+tbody tr:hover {
+    @apply bg-gray-50;
+}
